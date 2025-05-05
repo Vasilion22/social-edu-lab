@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!-- © 2025 Marco Sala - Progetto didattico aperto ma non rivendicabile. Vietata la rivendita. -->
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SocialEduLab</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      color: #222;
+      font-size: 2em;
+      margin-bottom: 30px;
+    }
+    .menu-scelta, .post-form, .post-container {
+      max-width: 700px;
+      margin: auto;
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+    .social-btn {
+      padding: 10px 16px;
+      border: none;
+      border-radius: 6px;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    .social-btn:hover {
+      opacity: 0.9;
+    }
+    .post-form {
+      transition: all 0.3s ease;
+    }
+    .post-form.facebook-style {
+      border: 2px solid #3b5998;
+      background: #f0f2f5;
+    }
+    .post-form.instagram-style {
+      border: 2px solid #e1306c;
+      background: #fff0f5;
+    }
+    .post-form.linkedin-style {
+      border: 2px solid #0077b5;
+      background: #eef3f8;
+    }
+    .post-form.tiktok-style {
+      border: 2px solid #000;
+      background: #f0f0f0;
+    }
+    textarea {
+      width: 100%;
+      padding: 12px;
+      margin-top: 10px;
+      font-size: 16px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .media-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
+    .media-buttons button {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #e0e0e0;
+      transition: background 0.2s;
+    }
+    .media-buttons button:hover {
+      background-color: #ccc;
+    }
+    .file-info {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #444;
+    }
+    input[type="file"] {
+      display: none;
+    }
+    button {
+      margin-top: 12px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+    }
+    .post {
+      border-top: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      background: #fff;
+    }
+    .post-author {
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 5px;
+    }
+    .post-content {
+      margin-top: 8px;
+      color: #333;
+    }
+    .post-social-label {
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-size: 13px;
+    }
+    .media-wrapper {
+      position: relative;
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      background: #000;
+      overflow: hidden;
+    }
+    .media-wrapper img,
+    .media-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
+    }
+    .facebook-style.verticale-facebook .media-wrapper {
+      aspect-ratio: 3 / 4;
+      width: 100%;
+    }
+    .instagram-style .media-wrapper,
+    .linkedin-style .media-wrapper {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+    .tiktok-style .media-wrapper {
+      aspect-ratio: 9 / 16;
+      width: 40%;
+    }
+    .actions {
+      margin-top: 15px;
+    }
+    .comment-section {
+      margin-left: 20px;
+      margin-top: 15px;
+      border-left: 3px solid #ccc;
+      padding-left: 10px;
+    }
+  </style>
+</head>
+<body>
+  <h1>SocialEduLab</h1>
+
+  <div class="menu-scelta">
+    <div id="socialButtons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <button class="social-btn" data-social="facebook" style="background:#3b5998;">Facebook</button>
+      <button class="social-btn" data-social="instagram" style="background:#e1306c;">Instagram</button>
+      <button class="social-btn" data-social="linkedin" style="background:#0077b5;">LinkedIn</button>
+      <button class="social-btn" data-social="tiktok" style="background:#000000;">TikTok</button>
+    </div>
+    <h3 id="currentSocial" style="text-align: center; margin-top: 20px;">Nessun social selezionato</h3>
+  </div>
+
+  <div class="post-form" id="postForm">
+    <h2>Crea un Nuovo Post</h2>
+    <textarea id="postText" placeholder="Scrivi qui il tuo post..."></textarea>
+    <div class="media-buttons">
+      <button onclick="document.getElementById('imageInput').click()">📷 Immagine</button>
+      <button onclick="document.getElementById('videoInput').click()">🎥 Video</button>
+    </div>
+    <input type="file" id="imageInput" accept="image/*">
+    <input type="file" id="videoInput" accept="video/*">
+    <div id="fileInfo" class="file-info"></div>
+    <button onclick="pubblicaPost()">Pubblica</button>
+  </div>
+
+  <div class="post-container" id="feed">
+    <h2>Feed degli Studenti</h2>
+    <div style="margin-bottom: 15px; text-align: center;">
+      <button onclick="filtraPost('tutti')">Tutti</button>
+      <button onclick="filtraPost('facebook')">Solo Facebook</button>
+      <button onclick="filtraPost('instagram')">Solo Instagram</button>
+      <button onclick="filtraPost('linkedin')">Solo LinkedIn</button>
+      <button onclick="filtraPost('tiktok')">Solo TikTok</button>
+    </div>
+  </div>
+
+  <footer style="text-align:center; font-size: 13px; color: #666; margin-top: 40px;">
+    Created by Marco Sala with ChatGPT · © 2025
+  </footer>
+
+  <script>
+    const feed = document.getElementById('feed');
+    let selectedSocial = null;
+    let selectedFile = null;
+
+    document.querySelectorAll('.social-btn').forEach(btn => {
+      btn.addEventListener('click', () => {
+        selectedSocial = btn.dataset.social;
+        document.getElementById('currentSocial').textContent = `Stai creando un post per: ${btn.textContent}`;
+        const postForm = document.getElementById('postForm');
+        postForm.className = 'post-form';
+        if (selectedSocial) postForm.classList.add(`${selectedSocial}-style`);
+      });
+    });
+
+    document.getElementById('imageInput').addEventListener('change', (e) => {
+      selectedFile = e.target.files[0];
+      document.getElementById('fileInfo').textContent = `📷 Immagine caricata: ${selectedFile?.name || ''}`;
+    });
+
+    document.getElementById('videoInput').addEventListener('change', (e) => {
+      selectedFile = e.target.files[0];
+      document.getElementById('fileInfo').textContent = `🎥 Video caricato: ${selectedFile?.name || ''}`;
+    });
+
+    function pubblicaPost() {
+      const social = selectedSocial;
+      const content = document.getElementById('postText').value.trim();
+      const file = selectedFile;
+      document.getElementById('fileInfo').textContent = '';
+
+      if (!content && !file) return;
+
+      const postDiv = document.createElement('div');
+      postDiv.className = `post post-${social}`;
+      if (social) postDiv.classList.add(`${social}-style`);
+
+      const label = document.createElement('div');
+      label.className = 'post-social-label';
+      label.textContent = `Post ${social.charAt(0).toUpperCase() + social.slice(1)}`;
+      postDiv.appendChild(label);
+
+      const author = document.createElement('div');
+      author.className = 'post-author';
+      author.textContent = 'Studente Anonimo';
+      postDiv.appendChild(author);
+
+      const postContent = document.createElement('div');
+      postContent.className = 'post-content';
+      postContent.textContent = content;
+      postDiv.appendChild(postContent);
+
+      if (file) {
+        if (file.type.startsWith('image/')) {
+          const img = new Image();
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            img.src = e.target.result;
+            img.onload = function () {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'media-wrapper';
+
+              // Applica layout verticale per Facebook
+              if (social === 'facebook' && img.height > img.width) {
+                wrapper.style.aspectRatio = '3 / 4';
+                wrapper.style.backgroundColor = '#000';
+              }
+
+              wrapper.appendChild(img);
+              postDiv.appendChild(wrapper);
+            };
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'media-wrapper';
+            const video = document.createElement('video');
+            video.controls = true;
+            video.src = e.target.result;
+            wrapper.appendChild(video);
+            postDiv.appendChild(wrapper);
+          };
+          reader.readAsDataURL(file);
+        }
+      }
+
+      const likeBtn = document.createElement('button');
+      let likeCount = 0;
+      likeBtn.textContent = `👍 Mi piace (${likeCount})`;
+      likeBtn.onclick = () => {
+        likeCount++;
+        likeBtn.textContent = `👍 Mi piace (${likeCount})`;
+      };
+
+      const commentInput = document.createElement('input');
+      commentInput.type = 'text';
+      commentInput.placeholder = 'Lascia un commento...';
+      commentInput.style.marginTop = '10px';
+      commentInput.style.width = '70%';
+      commentInput.style.padding = '5px';
+
+      const commentBtn = document.createElement('button');
+      commentBtn.textContent = 'Commenta';
+      commentBtn.onclick = () => {
+        const commentText = commentInput.value.trim();
+        if (!commentText) return;
+        const commentSection = postDiv.querySelector('.comment-section') || creaCommentSection(postDiv);
+        const commentDiv = document.createElement('div');
+        commentDiv.textContent = `Studente: ${commentText}`;
+        commentSection.appendChild(commentDiv);
+        commentInput.value = '';
+      };
+
+      const actions = document.createElement('div');
+      actions.className = 'actions';
+      actions.appendChild(likeBtn);
+      actions.appendChild(document.createElement('br'));
+      actions.appendChild(commentInput);
+      actions.appendChild(commentBtn);
+
+      const commentSection = document.createElement('div');
+      commentSection.className = 'comment-section';
+      actions.appendChild(commentSection);
+
+      postDiv.appendChild(actions);
+      feed.appendChild(postDiv);
+
+      document.getElementById('postText').value = '';
+      selectedFile = null;
+      document.getElementById('imageInput').value = '';
+      document.getElementById('videoInput').value = '';
+    }
+
+    function creaCommentSection(postDiv) {
+      const commentSection = document.createElement('div');
+      commentSection.className = 'comment-section';
+      postDiv.appendChild(commentSection);
+      return commentSection;
+    }
+
+    function filtraPost(social) {
+      document.querySelectorAll('.post').forEach(post => {
+        if (social === 'tutti' || post.classList.contains(`post-${social}`)) {
+          post.style.display = '';
+        } else {
+          post.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>
