@@ -442,7 +442,9 @@
     }
 
     function svuotaFeed() {
-      if (!confirm('Sei sicuro di voler eliminare tutti i post dal feed condiviso?')) return;
+      const pwd = prompt('Inserisci la password per svuotare il feed:');
+      if (pwd === null) return;
+      if (pwd !== 'paperino') { alert('Password errata.'); return; }
       postsRef.remove();
       db.ref('likes').remove();
       db.ref('comments').remove();
