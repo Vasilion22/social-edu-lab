@@ -225,13 +225,11 @@
 
     document.getElementById('videoInput').addEventListener('change', e => {
       selectedFile = e.target.files[0];
-      if (selectedFile && selectedFile.size > 5 * 1024 * 1024) {
-        document.getElementById('fileInfo').textContent = '⚠️ Video troppo grande (max 5 MB)';
-        selectedFile = null;
-        e.target.value = '';
-        return;
+      if (selectedFile && selectedFile.size > 50 * 1024 * 1024) {
+        document.getElementById('fileInfo').textContent = `🎥 Video: ${selectedFile.name} — ⚠️ File grande, si consiglia max 50 MB`;
+      } else {
+        document.getElementById('fileInfo').textContent = `🎥 Video: ${selectedFile?.name || ''}`;
       }
-      document.getElementById('fileInfo').textContent = `🎥 Video: ${selectedFile?.name || ''}`;
     });
 
     function pubblicaPost() {
