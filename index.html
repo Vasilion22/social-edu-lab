@@ -5,11 +5,6 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>SocialEduLab</title>
-
-  <!-- Firebase SDK -->
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-database-compat.js"></script>
-
   <style>
     body {
       font-family: 'Segoe UI', sans-serif;
@@ -29,7 +24,7 @@
       background: white;
       padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
       margin-bottom: 30px;
     }
     .social-btn {
@@ -41,12 +36,28 @@
       cursor: pointer;
       font-size: 14px;
     }
-    .social-btn:hover { opacity: 0.9; }
-    .post-form { transition: all 0.3s ease; }
-    .post-form.facebook-style  { border: 2px solid #3b5998; background: #f0f2f5; }
-    .post-form.instagram-style { border: 2px solid #e1306c; background: #fff0f5; }
-    .post-form.linkedin-style  { border: 2px solid #0077b5; background: #eef3f8; }
-    .post-form.tiktok-style    { border: 2px solid #000;    background: #f0f0f0; }
+    .social-btn:hover {
+      opacity: 0.9;
+    }
+    .post-form {
+      transition: all 0.3s ease;
+    }
+    .post-form.facebook-style {
+      border: 2px solid #3b5998;
+      background: #f0f2f5;
+    }
+    .post-form.instagram-style {
+      border: 2px solid #e1306c;
+      background: #fff0f5;
+    }
+    .post-form.linkedin-style {
+      border: 2px solid #0077b5;
+      background: #eef3f8;
+    }
+    .post-form.tiktok-style {
+      border: 2px solid #000;
+      background: #f0f0f0;
+    }
     textarea {
       width: 100%;
       padding: 12px;
@@ -54,87 +65,123 @@
       font-size: 16px;
       border-radius: 6px;
       border: 1px solid #ccc;
-      box-sizing: border-box;
     }
-    .media-buttons { display: flex; gap: 10px; margin-top: 10px; }
+    .media-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+    }
     .media-buttons button {
-      flex: 1; padding: 10px; font-size: 14px;
-      border: none; border-radius: 6px; cursor: pointer;
-      background-color: #e0e0e0; transition: background 0.2s;
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      background-color: #e0e0e0;
+      transition: background 0.2s;
     }
-    .media-buttons button:hover { background-color: #ccc; }
-    .file-info { margin-top: 8px; font-size: 14px; color: #444; }
-    input[type="file"] { display: none; }
+    .media-buttons button:hover {
+      background-color: #ccc;
+    }
+    .file-info {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #444;
+    }
+    input[type="file"] {
+      display: none;
+    }
     button {
-      margin-top: 12px; padding: 10px 20px;
-      background: #007bff; color: white;
-      border: none; border-radius: 6px;
-      cursor: pointer; font-size: 15px;
+      margin-top: 12px;
+      padding: 10px 20px;
+      background: #007bff;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
     }
-    button:disabled { background: #aaa; cursor: not-allowed; }
     .post {
-      border-top: 1px solid #ddd; padding: 20px;
-      border-radius: 10px; margin-top: 20px; background: #fff;
+      border-top: 1px solid #ddd;
+      padding: 20px;
+      border-radius: 10px;
+      margin-top: 20px;
+      background: #fff;
     }
-    .post-author    { font-weight: bold; color: #007bff; margin-bottom: 5px; }
-    .post-content   { margin-top: 8px; color: #333; }
+    .post-author {
+      font-weight: bold;
+      color: #007bff;
+      margin-bottom: 5px;
+    }
+    .post-content {
+      margin-top: 8px;
+      color: #333;
+    }
     .post-social-label {
-      font-weight: bold; color: #666; margin-bottom: 8px;
-      text-transform: uppercase; font-size: 13px;
+      font-weight: bold;
+      color: #666;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      font-size: 13px;
     }
-    .post-timestamp { font-size: 11px; color: #aaa; margin-top: 4px; }
     .media-wrapper {
-      position: relative; margin-top: 15px;
-      display: flex; justify-content: center; align-items: center;
-      border-radius: 8px; background: #000; overflow: hidden;
+      position: relative;
+      margin-top: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+      background: #000;
+      overflow: hidden;
     }
     .media-wrapper img,
-    .media-wrapper video { width: 100%; height: 100%; object-fit: contain; background: #000; }
-    .tiktok-style    .media-wrapper { aspect-ratio: 9/16; width: 40%; background: #000; }
-    .crop-note {
-      position: absolute; bottom: 8px; left: 8px;
-      background: rgba(0,0,0,0.65); color: #fff;
-      font-size: 11px; padding: 3px 7px; border-radius: 4px;
-      pointer-events: none;
+    .media-wrapper video {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+      background: #000;
     }
-    .actions { margin-top: 15px; }
+    .facebook-style.verticale-facebook .media-wrapper {
+      aspect-ratio: 3 / 4;
+      width: 100%;
+    }
+    .instagram-style .media-wrapper,
+    .linkedin-style .media-wrapper {
+      aspect-ratio: 1 / 1;
+      width: 100%;
+    }
+    .tiktok-style .media-wrapper {
+      aspect-ratio: 9 / 16;
+      width: 40%;
+    }
+    .actions {
+      margin-top: 15px;
+    }
     .comment-section {
-      margin-left: 20px; margin-top: 15px;
-      border-left: 3px solid #ccc; padding-left: 10px;
-    }
-    #syncStatus {
-      text-align: center; font-size: 13px;
-      padding: 6px; border-radius: 6px;
-      margin-bottom: 10px;
-    }
-    #syncStatus.ok      { color: #2a7a2a; background: #eaffea; }
-    #syncStatus.errore  { color: #a00;    background: #ffeaea; }
-    #nomeInput {
-      width: 100%; padding: 8px; font-size: 15px;
-      border-radius: 6px; border: 1px solid #ccc;
-      margin-bottom: 8px; box-sizing: border-box;
+      margin-left: 20px;
+      margin-top: 15px;
+      border-left: 3px solid #ccc;
+      padding-left: 10px;
     }
   </style>
 </head>
 <body>
   <h1>SocialEduLab</h1>
 
-  <div id="syncStatus" class="errore">⏳ Connessione a Firebase...</div>
-
   <div class="menu-scelta">
-    <div id="socialButtons" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;">
-      <button class="social-btn" data-social="facebook"  style="background:#3b5998;">Facebook</button>
+    <div id="socialButtons" style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+      <button class="social-btn" data-social="facebook" style="background:#3b5998;">Facebook</button>
       <button class="social-btn" data-social="instagram" style="background:#e1306c;">Instagram</button>
-      <button class="social-btn" data-social="linkedin"  style="background:#0077b5;">LinkedIn</button>
-      <button class="social-btn" data-social="tiktok"    style="background:#000000;">TikTok</button>
+      <button class="social-btn" data-social="linkedin" style="background:#0077b5;">LinkedIn</button>
+      <button class="social-btn" data-social="tiktok" style="background:#000000;">TikTok</button>
     </div>
-    <h3 id="currentSocial" style="text-align:center;margin-top:20px;">Nessun social selezionato</h3>
+    <h3 id="currentSocial" style="text-align: center; margin-top: 20px;">Nessun social selezionato</h3>
   </div>
 
   <div class="post-form" id="postForm">
     <h2>Crea un Nuovo Post</h2>
-    <input type="text" id="nomeInput" placeholder="Il tuo nome (es. Mario R.)" maxlength="40" />
-    <textarea id="postText" placeholder="Scrivi qui il tuo post..." rows="4"></textarea>
+    <textarea id="postText" placeholder="Scrivi qui il tuo post..."></textarea>
     <div class="media-buttons">
       <button onclick="document.getElementById('imageInput').click()">📷 Immagine</button>
       <button onclick="document.getElementById('videoInput').click()">🎥 Video</button>
@@ -142,196 +189,60 @@
     <input type="file" id="imageInput" accept="image/*">
     <input type="file" id="videoInput" accept="video/*">
     <div id="fileInfo" class="file-info"></div>
-    <button id="pubblicaBtn" onclick="pubblicaPost()">Pubblica</button>
+    <button onclick="pubblicaPost()">Pubblica</button>
   </div>
 
   <div class="post-container" id="feed">
     <h2>Feed degli Studenti</h2>
-    <div style="margin-bottom:15px;text-align:center;display:flex;gap:8px;flex-wrap:wrap;justify-content:center;">
+    <div style="margin-bottom: 15px; text-align: center;">
       <button onclick="filtraPost('tutti')">Tutti</button>
       <button onclick="filtraPost('facebook')">Solo Facebook</button>
       <button onclick="filtraPost('instagram')">Solo Instagram</button>
       <button onclick="filtraPost('linkedin')">Solo LinkedIn</button>
       <button onclick="filtraPost('tiktok')">Solo TikTok</button>
-      <button onclick="svuotaFeed()" style="background:#c0392b;">🗑 Svuota feed</button>
     </div>
-    <div id="postsArea"></div>
   </div>
 
-  <footer style="text-align:center;font-size:13px;color:#666;margin-top:40px;">
+  <footer style="text-align:center; font-size: 13px; color: #666; margin-top: 40px;">
     Created by Marco Sala with ChatGPT · © 2025
   </footer>
 
   <script>
-    // ─────────────────────────────────────────────
-    // CONFIGURAZIONE FIREBASE
-    // Sostituisci questi valori con quelli del tuo progetto Firebase
-    // Progetto → Impostazioni → Generali → Le tue app → Configurazione
-    // ─────────────────────────────────────────────
-    const firebaseConfig = {
-      apiKey:            "AIzaSyB_BYPGrll4qs_EwBWYNfG8VwjCiIzlvZA",
-      authDomain:        "social-edu-lab.firebaseapp.com",
-      databaseURL:       "https://social-edu-lab-default-rtdb.europe-west1.firebasedatabase.app",
-      projectId:         "social-edu-lab",
-      storageBucket:     "social-edu-lab.firebasestorage.app",
-      messagingSenderId: "1022435023030",
-      appId:             "1:1022435023030:web:58e1ee8ed0f1bc9c136e17"
-    };
-    // ─────────────────────────────────────────────
-
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-    const postsRef = db.ref('posts');
-
-    const syncStatus = document.getElementById('syncStatus');
-
-    // Verifica connessione
-    db.ref('.info/connected').on('value', snap => {
-      if (snap.val()) {
-        syncStatus.textContent = '🟢 Connesso — i post sono sincronizzati in tempo reale';
-        syncStatus.className = 'ok';
-      } else {
-        syncStatus.textContent = '🔴 Non connesso — controlla la configurazione Firebase';
-        syncStatus.className = 'errore';
-      }
-    });
-
+    const feed = document.getElementById('feed');
     let selectedSocial = null;
-    let selectedFile   = null;
-    let filtroAttivo   = 'tutti';
-    const postedIds    = new Set(); // evita duplicati
+    let selectedFile = null;
 
     document.querySelectorAll('.social-btn').forEach(btn => {
       btn.addEventListener('click', () => {
         selectedSocial = btn.dataset.social;
-        document.getElementById('currentSocial').textContent =
-          `Stai creando un post per: ${btn.textContent}`;
+        document.getElementById('currentSocial').textContent = `Stai creando un post per: ${btn.textContent}`;
         const postForm = document.getElementById('postForm');
         postForm.className = 'post-form';
-        postForm.classList.add(`${selectedSocial}-style`);
+        if (selectedSocial) postForm.classList.add(`${selectedSocial}-style`);
       });
     });
 
-    document.getElementById('imageInput').addEventListener('change', e => {
+    document.getElementById('imageInput').addEventListener('change', (e) => {
       selectedFile = e.target.files[0];
-      if (selectedFile && selectedFile.size > 2 * 1024 * 1024) {
-        document.getElementById('fileInfo').textContent = '⚠️ Immagine troppo grande (max 2 MB)';
-        selectedFile = null;
-        e.target.value = '';
-        return;
-      }
-      document.getElementById('fileInfo').textContent = `📷 Immagine: ${selectedFile?.name || ''}`;
+      document.getElementById('fileInfo').textContent = `📷 Immagine caricata: ${selectedFile?.name || ''}`;
     });
 
-    document.getElementById('videoInput').addEventListener('change', e => {
+    document.getElementById('videoInput').addEventListener('change', (e) => {
       selectedFile = e.target.files[0];
-      if (selectedFile && selectedFile.size > 50 * 1024 * 1024) {
-        document.getElementById('fileInfo').textContent = `🎥 Video: ${selectedFile.name} — ⚠️ File grande, si consiglia max 50 MB`;
-      } else {
-        document.getElementById('fileInfo').textContent = `🎥 Video: ${selectedFile?.name || ''}`;
-      }
+      document.getElementById('fileInfo').textContent = `🎥 Video caricato: ${selectedFile?.name || ''}`;
     });
 
     function pubblicaPost() {
-      const social   = selectedSocial;
-      const content  = document.getElementById('postText').value.trim();
-      const nome     = document.getElementById('nomeInput').value.trim() || 'Studente Anonimo';
-      const file     = selectedFile;
+      const social = selectedSocial;
+      const content = document.getElementById('postText').value.trim();
+      const file = selectedFile;
+      document.getElementById('fileInfo').textContent = '';
 
-      if (!social) { alert('Seleziona prima un social!'); return; }
       if (!content && !file) return;
 
-      const btn = document.getElementById('pubblicaBtn');
-      btn.disabled = true;
-      btn.textContent = 'Pubblicazione...';
-
-      function salvaPost(mediaData, mediaType) {
-        const post = {
-          social,
-          content,
-          nome,
-          timestamp: Date.now(),
-          mediaData:  mediaData  || null,
-          mediaType:  mediaType  || null
-        };
-        postsRef.push(post).then(() => {
-          document.getElementById('postText').value = '';
-          document.getElementById('nomeInput').value = '';
-          document.getElementById('fileInfo').textContent = '';
-          document.getElementById('imageInput').value = '';
-          document.getElementById('videoInput').value = '';
-          selectedFile = null;
-          btn.disabled = false;
-          btn.textContent = 'Pubblica';
-        }).catch(err => {
-          alert('Errore salvataggio: ' + err.message);
-          btn.disabled = false;
-          btn.textContent = 'Pubblica';
-        });
-      }
-
-      if (file) {
-        const reader = new FileReader();
-        reader.onload = e => salvaPost(e.target.result, file.type);
-        reader.readAsDataURL(file);
-      } else {
-        salvaPost(null, null);
-      }
-    }
-
-    // Gestione dinamica del ratio per ogni social
-    function applicaRatio(wrapper, media, social, r) {
-      // r = larghezza/altezza (>1 landscape, <1 portrait, =1 square)
-      let containerRatio, fitMode, cropped = false;
-
-      if (social === 'tiktok') {
-        // Sempre 9:16, bande nere per tutto il resto
-        containerRatio = 9 / 16;
-        fitMode = 'contain';
-        wrapper.style.background = '#000';
-      } else if (social === 'instagram') {
-        // Range accettato: 1.91:1 (landscape max) → 4:5 (portrait max = 0.8)
-        if (r > 1.91) { containerRatio = 1.91; fitMode = 'cover'; cropped = true; }
-        else if (r < 0.8) { containerRatio = 0.8; fitMode = 'cover'; cropped = true; }
-        else { containerRatio = r; fitMode = 'contain'; }
-      } else if (social === 'facebook') {
-        // Accetta tutto da 9:16 a 16:9, taglia solo oltre 4:5 in portrait
-        if (r < 0.8) { containerRatio = 0.8; fitMode = 'cover'; cropped = true; }
-        else { containerRatio = r; fitMode = 'contain'; }
-      } else if (social === 'linkedin') {
-        // Mostra al ratio naturale, ideale tra 1:1 e 1.91:1
-        // Portrait (r<1) non è nativo → letterbox con sfondo neutro
-        containerRatio = r < 1 ? 1 : Math.min(r, 1.91);
-        fitMode = r < 1 ? 'contain' : 'contain';
-        if (r < 1) wrapper.style.background = '#e8e8e8';
-      }
-
-      wrapper.style.aspectRatio = String(containerRatio);
-      media.style.objectFit = fitMode;
-
-      if (cropped && !wrapper.querySelector('.crop-note')) {
-        const note = document.createElement('div');
-        note.className = 'crop-note';
-        note.textContent = '✂️ Ritagliato dalla piattaforma';
-        wrapper.appendChild(note);
-      }
-    }
-
-    // Ascolta nuovi post in tempo reale
-    postsRef.on('child_added', snap => {
-      const id   = snap.key;
-      const post = snap.val();
-      if (postedIds.has(id)) return;
-      postedIds.add(id);
-      renderPost(id, post);
-    });
-
-    function renderPost(id, post) {
-      const { social, content, nome, timestamp, mediaData, mediaType } = post;
-
       const postDiv = document.createElement('div');
-      postDiv.className = `post post-${social} ${social}-style`;
-      postDiv.dataset.postId = id;
+      postDiv.className = `post post-${social}`;
+      if (social) postDiv.classList.add(`${social}-style`);
 
       const label = document.createElement('div');
       label.className = 'post-social-label';
@@ -340,78 +251,76 @@
 
       const author = document.createElement('div');
       author.className = 'post-author';
-      author.textContent = nome;
+      author.textContent = 'Studente Anonimo';
       postDiv.appendChild(author);
-
-      const ts = document.createElement('div');
-      ts.className = 'post-timestamp';
-      ts.textContent = timestamp ? new Date(timestamp).toLocaleString('it-IT') : '';
-      postDiv.appendChild(ts);
 
       const postContent = document.createElement('div');
       postContent.className = 'post-content';
       postContent.textContent = content;
       postDiv.appendChild(postContent);
 
-      if (mediaData) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'media-wrapper';
-        wrapper.style.position = 'relative';
-        wrapper.style.width = social === 'tiktok' ? '40%' : '100%';
-
-        if (mediaType && mediaType.startsWith('image/')) {
+      if (file) {
+        if (file.type.startsWith('image/')) {
           const img = new Image();
-          img.style.cssText = 'width:100%;height:100%;display:block;';
-          img.onload = () => applicaRatio(wrapper, img, social, img.naturalWidth / img.naturalHeight);
-          img.src = mediaData;
-          wrapper.appendChild(img);
-        } else if (mediaType && mediaType.startsWith('video/')) {
-          const video = document.createElement('video');
-          video.controls = true;
-          video.style.cssText = 'width:100%;height:100%;display:block;';
-          video.onloadedmetadata = () => applicaRatio(wrapper, video, social, video.videoWidth / video.videoHeight);
-          if (social === 'tiktok') { wrapper.style.aspectRatio = String(9/16); video.style.objectFit = 'contain'; }
-          video.src = mediaData;
-          wrapper.appendChild(video);
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            img.src = e.target.result;
+            img.onload = function () {
+              const wrapper = document.createElement('div');
+              wrapper.className = 'media-wrapper';
+
+              // Applica layout verticale per Facebook
+              if (social === 'facebook' && img.height > img.width) {
+                wrapper.style.aspectRatio = '3 / 4';
+                wrapper.style.backgroundColor = '#000';
+              }
+
+              wrapper.appendChild(img);
+              postDiv.appendChild(wrapper);
+            };
+          };
+          reader.readAsDataURL(file);
+        } else if (file.type.startsWith('video/')) {
+          const reader = new FileReader();
+          reader.onload = function(e) {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'media-wrapper';
+            const video = document.createElement('video');
+            video.controls = true;
+            video.src = e.target.result;
+            wrapper.appendChild(video);
+            postDiv.appendChild(wrapper);
+          };
+          reader.readAsDataURL(file);
         }
-        postDiv.appendChild(wrapper);
       }
 
-      // Like
       const likeBtn = document.createElement('button');
-      const likeRef = db.ref(`likes/${id}`);
-      likeRef.on('value', snap => {
-        const count = snap.val() || 0;
-        likeBtn.textContent = `👍 Mi piace (${count})`;
-      });
-      likeBtn.onclick = () => likeRef.transaction(v => (v || 0) + 1);
+      let likeCount = 0;
+      likeBtn.textContent = `👍 Mi piace (${likeCount})`;
+      likeBtn.onclick = () => {
+        likeCount++;
+        likeBtn.textContent = `👍 Mi piace (${likeCount})`;
+      };
 
-      // Commenti
       const commentInput = document.createElement('input');
       commentInput.type = 'text';
       commentInput.placeholder = 'Lascia un commento...';
-      commentInput.style.cssText = 'margin-top:10px;width:65%;padding:5px;border-radius:4px;border:1px solid #ccc;';
+      commentInput.style.marginTop = '10px';
+      commentInput.style.width = '70%';
+      commentInput.style.padding = '5px';
 
       const commentBtn = document.createElement('button');
       commentBtn.textContent = 'Commenta';
       commentBtn.onclick = () => {
-        const testo = commentInput.value.trim();
-        if (!testo) return;
-        const nomeAutore = document.getElementById('nomeInput').value.trim() || 'Studente';
-        db.ref(`comments/${id}`).push({ testo, autore: nomeAutore, ts: Date.now() });
+        const commentText = commentInput.value.trim();
+        if (!commentText) return;
+        const commentSection = postDiv.querySelector('.comment-section') || creaCommentSection(postDiv);
+        const commentDiv = document.createElement('div');
+        commentDiv.textContent = `Studente: ${commentText}`;
+        commentSection.appendChild(commentDiv);
         commentInput.value = '';
       };
-
-      const commentArea = document.createElement('div');
-      commentArea.className = 'comment-section';
-
-      db.ref(`comments/${id}`).on('child_added', snap => {
-        const c = snap.val();
-        const div = document.createElement('div');
-        div.style.marginBottom = '4px';
-        div.textContent = `${c.autore}: ${c.testo}`;
-        commentArea.appendChild(div);
-      });
 
       const actions = document.createElement('div');
       actions.className = 'actions';
@@ -419,35 +328,35 @@
       actions.appendChild(document.createElement('br'));
       actions.appendChild(commentInput);
       actions.appendChild(commentBtn);
-      actions.appendChild(commentArea);
+
+      const commentSection = document.createElement('div');
+      commentSection.className = 'comment-section';
+      actions.appendChild(commentSection);
+
       postDiv.appendChild(actions);
+      feed.appendChild(postDiv);
 
-      // Applica filtro attivo
-      if (filtroAttivo !== 'tutti' && filtroAttivo !== social) {
-        postDiv.style.display = 'none';
-      }
+      document.getElementById('postText').value = '';
+      selectedFile = null;
+      document.getElementById('imageInput').value = '';
+      document.getElementById('videoInput').value = '';
+    }
 
-      const postsArea = document.getElementById('postsArea');
-      postsArea.insertBefore(postDiv, postsArea.firstChild);
+    function creaCommentSection(postDiv) {
+      const commentSection = document.createElement('div');
+      commentSection.className = 'comment-section';
+      postDiv.appendChild(commentSection);
+      return commentSection;
     }
 
     function filtraPost(social) {
-      filtroAttivo = social;
       document.querySelectorAll('.post').forEach(post => {
-        post.style.display =
-          (social === 'tutti' || post.classList.contains(`post-${social}`)) ? '' : 'none';
+        if (social === 'tutti' || post.classList.contains(`post-${social}`)) {
+          post.style.display = '';
+        } else {
+          post.style.display = 'none';
+        }
       });
-    }
-
-    function svuotaFeed() {
-      const pwd = prompt('Inserisci la password per svuotare il feed:');
-      if (pwd === null) return;
-      if (pwd !== 'paperino') { alert('Password errata.'); return; }
-      postsRef.remove();
-      db.ref('likes').remove();
-      db.ref('comments').remove();
-      document.getElementById('postsArea').innerHTML = '';
-      postedIds.clear();
     }
   </script>
 </body>
