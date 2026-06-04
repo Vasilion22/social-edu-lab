@@ -68,7 +68,7 @@
     }
     .media-wrapper img,
     .media-wrapper video { width: 100%; height: 100%; object-fit: contain; background: #000; display: block; }
-    .tiktok-style .media-wrapper { aspect-ratio: 9/16; width: 40%; background: #000; }
+    .tiktok-style .media-wrapper { aspect-ratio: 9/16; width: 100%; background: #000; }
     .crop-note {
       position: absolute; bottom: 8px; left: 8px;
       background: rgba(0,0,0,0.65); color: #fff;
@@ -139,7 +139,7 @@
   </div>
 
   <footer style="text-align:center;font-size:13px;color:#666;margin-top:40px;">
-    Created by Marco Sala with AI · © 2025
+    Created by Marco Sala with ChatGPT · © 2025
   </footer>
 
   <script>
@@ -343,7 +343,7 @@
         const wrapper = document.createElement('div');
         wrapper.className = 'media-wrapper';
         wrapper.style.position = 'relative';
-        wrapper.style.width = social === 'tiktok' ? '40%' : '100%';
+        wrapper.style.width = '100%';
 
         if (mediaType && mediaType.startsWith('image/')) {
           const img = new Image();
